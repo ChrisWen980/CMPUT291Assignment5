@@ -20,7 +20,7 @@ def main():
     '''
     conn = sqlite3.connect('A5.db')
     c = conn.cursor()
-    c.execute("CREATE TABLE IF NOT EXISTS Listings (id integer PRIMARY KEY, name text, host_id integer, host_name text, neighbourhood text, room_type text, price integer, minimum_nights integer, availability_365 integer);")
+    c.execute("CREATE TABLE IF NOT EXISTS Listings (id integer PRIMARY KEY, name text, host_id integer, host_name text, neighbourhood text, room_type text, price real, minimum_nights integer, availability_365 integer);")
     c.execute("CREATE TABLE IF NOT EXISTS Reviews (id integer PRIMARY KEY, listing_id integer, date text, reviewer_id integer, reviewer_name text, comments text);")
 
     ################ Making table: Listings    
@@ -33,7 +33,7 @@ def main():
                 host_name = str(summary.host_name)
                 neighbourhood = str(summary.neighbourhood)
                 room_type = str(summary.room_type)
-                price = int(summary.price)
+                price = float(summary.price)
                 minimum_nights = int(summary.minimum_nights)
                 availability_365 = int(summary.availability_365)
             except:
