@@ -18,10 +18,6 @@ def main():
     c.execute("SELECT * FROM Reviews ORDER BY listing_id ASC;")
     reviewsData = c.fetchall()
 
-    print("This is listings length: ", len(listingData), "\n")
-    print("This is reviews length: ", len(reviewsData), "\n")
-
-
     try:
         listingCol = mongo_client.mongoDB.create_collection('listingCol')
     except:
@@ -29,7 +25,6 @@ def main():
         listingCol.drop()
 
     reviewsList = []
-    print(len(reviewsData), "\n")
 
     for i in range(len(listingData)):
         for j in range(len(reviewsData)):
@@ -58,7 +53,6 @@ def main():
     print("Looks like: \n")
     for i in aggResult:
         print(i, '\n')
-
 
 if __name__ == "__main__":
     main()
