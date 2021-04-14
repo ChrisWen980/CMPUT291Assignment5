@@ -9,6 +9,8 @@ def main():
     listingCol = mongoDB['listingCol']
 
     reviewsidList = []
+
+    startTime = time.time()
     findResult = list(mongoDB.listingCol.find({}, {"reviews.listing_id": 1}))
 
     for i in range(len(findResult)):
@@ -16,7 +18,6 @@ def main():
             if len(findResult[i]["reviews"][j]) != 0:
                 reviewsidList.append(findResult[i]["reviews"][j]["listing_id"])
 
-    startTime = time.time()
     newFindResult = mongoDB.listingCol.find({"id": {"$nin": reviewsidList}}, {"name": 1,"id": 1}).sort("id", 1).limit(10)
     endTime = time.time()
 
