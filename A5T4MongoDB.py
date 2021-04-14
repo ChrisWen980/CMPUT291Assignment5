@@ -9,27 +9,21 @@ def main():
     listingCol = mongoDB['listingCol']
 
     reviewsidList = []
-    findResult = mongoDB.listingCol.find({}, {"reviews.id": 1})
+    findResult = list(mongoDB.listingCol.find({}, {"reviews.listing_id": 1}))
 
-    #print(findResult[0], "\n \n \n",findResult[1]) 
-
-    i = 0
-
-    while findResult[i] != "":
+    for i in range(len(findResult)):
         for j in range(len(findResult[i]["reviews"])):
-            reviewsidList.append(findResult[i]["reviews"][j]["id"])
-        i += 1
-
+            if len(findResult[i]["reviews"][j]) != 0:
+                reviewsidList.append(findResult[i]["reviews"][j]["listing_id"])
 
     startTime = time.time()
-    newAggResult = mongoDB.listingCol.find({"id": {"$nin": ["$reviews.id"]}}, {"name": 1,"id": 1}).sort("id", 1).limit(10)
-    #c.execute("SELECT L.name, L.id FROM Listings L WHERE NOT EXISTS (SELECT * From Reviews R WHERE L.id = R.listing_id) ORDER BY L.id ASC LIMIT 10;")
+    newFindResult = mongoDB.listingCol.find({"id": {"$nin": reviewsidList}}, {"name": 1,"id": 1}).sort("id", 1).limit(10)
     endTime = time.time()
 
     print("(name, id)")
 
-    for row in newAggResult:
-        print(row)
+    for row in newFindResult:
+        print(row["name"], row["id"], sep=', ')
 
     print("Time taken to execute query: {} ms".format((endTime - startTime)*10**3))
 

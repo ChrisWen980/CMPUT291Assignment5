@@ -29,7 +29,7 @@ def main():
     for i in range(len(listingData)):
         for j in range(len(reviewsData)):
             if reviewsData[j][1] == listingData[i][0]:
-                reviewsList.append({"id": reviewsData[j][0], "date": reviewsData[j][2], "reviewer_id": reviewsData[j][3], "reviewer_name": reviewsData[j][4], "comments": reviewsData[j][5]})
+                reviewsList.append({"id": reviewsData[j][0], "listing_id": reviewsData[j][1], "date": reviewsData[j][2], "reviewer_id": reviewsData[j][3], "reviewer_name": reviewsData[j][4], "comments": reviewsData[j][5]})
             
         insertionDict = { "id": listingData[i][0], "name": listingData[i][1], "host_id": listingData[i][2], "host_name": listingData[i][3], "neighbourhood": listingData[i][4], "room_type": listingData[i][5], "price": listingData[i][6], "minimum_nights": listingData[i][7], "availability_365": listingData[i][8], "reviews": reviewsList}
         listingCol.insert_one(insertionDict)
