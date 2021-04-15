@@ -1,23 +1,28 @@
-import csv
+'''
+CMPUT 291
+Winter 2021
+Ahmad Amin 1623338
+Chris  Wen 1619368
+'''
+
 import sqlite3
 from pymongo import MongoClient
 from collections import namedtuple
 
 def main():
-    '''
-    Makes a database A5.db and from csv_reivews and csv_listings, creates and populates appropriate tables.
-    '''
     conn = sqlite3.connect('A5.db')
     c = conn.cursor()
 
     mongo_client = MongoClient()
     mongoDB = mongo_client['A5db']
 
+    # Fetch all the data from the SQL database
     c.execute("SELECT * FROM Listings ORDER BY id ASC;")
     listingData = c.fetchall()
     c.execute("SELECT * FROM Reviews ORDER BY listing_id ASC;")
     reviewsData = c.fetchall()
 
+    # Create the collection, if it already exists drop it
     try:
         listingCol = mongo_client.mongoDB.create_collection('listingCol')
     except:
@@ -26,6 +31,7 @@ def main():
 
     reviewsList = []
 
+    # Create all the documents and embed the reviews
     for i in range(len(listingData)):
         for j in range(len(reviewsData)):
             if reviewsData[j][1] == listingData[i][0]:
@@ -39,18 +45,20 @@ def main():
     conn.close()
     print("Database filled\n")
 
+
+    # Check if the database is correct
     print("Checking if mongoDB has correct values.\n")
-    print("Should look like: \n")
+    print("Should look like:")
     print('{ "_id" : null, "min" : 6033, "max" : 387534175, "avg" : 115176061.85829493, "count" : 4340 } \n')
     aggResult = mongoDB.listingCol.aggregate([{"$group": {"_id": "null", "min": {"$min": "$host_id"}, "max": {"$max": "$host_id"}, "avg": {"$avg": "$host_id"}, "count": {"$sum": 1}}}])
-    print("Looks like: \n")
+    print("Looks like:")
     for i in aggResult:
         print(i, '\n')
 
-    print("Second test should look like: \n")
+    print("Second test should look like:")
     print('{ "_id" : null, "min" : 26444, "max" : 730124064, "avg" : 370354766.84915775, "count" : 147936 } \n')
     aggResult = mongoDB.listingCol.aggregate([{"$unwind": "$reviews"}, {"$group": {"_id": "null", "min": {"$min": "$reviews.id"}, "max": {"$max": "$reviews.id"}, "avg": {"$avg": "$reviews.id"}, "count": {"$sum": 1}}}])
-    print("Looks like: \n")
+    print("Looks like:")
     for i in aggResult:
         print(i, '\n')
 

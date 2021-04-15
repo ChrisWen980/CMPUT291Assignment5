@@ -1,8 +1,10 @@
 '''
-CMPUT 291 Winter 2021
-Ahmad 1623338
+CMPUT 291
+Winter 2021
+Ahmad Amin 1623338
+Chris  Wen 1619368
 
-Make sure you run the code from the directory that contains YVR_Airbnb_reviews.csv, YVR_Airbnb_listings_summary.csv, and databaseGnerater.py.
+Make sure you run the code from the directory that contains YVR_Airbnb_reviews.csv, YVR_Airbnb_listings_summary.csv, and databaseGenerater.py.
 '''
 
 import csv
